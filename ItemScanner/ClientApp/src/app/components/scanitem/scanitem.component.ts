@@ -17,6 +17,7 @@ export class ScanitemComponent implements OnInit {
   scannedItems: ScannedItems;
   scItems: Item[]
   grandTotal: number = 0;
+  grandTotalDiscounted: number = 0;
 
 
   ngOnInit() {
@@ -34,7 +35,9 @@ export class ScanitemComponent implements OnInit {
 
     this.scanService.scanItem(item).subscribe(
       result => {
+
         this.grandTotal = result.grandTotal;
+        this.grandTotalDiscounted = result.grandTotalDiscounted;
         this.scItems = result.scannedItemsList;
       });
 

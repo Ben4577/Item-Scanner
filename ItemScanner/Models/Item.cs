@@ -13,10 +13,12 @@ namespace ItemScanner.Models
             discount = new Discount();
         }
 
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public int TotalItems { get; set; }
-        public double TotalItemPrice { get; set; }
+        public string Name { get; set; } = "";
+        public double Price { get; set; } = 0;
+        public int TotalItems { get; set; } = 0;
+        public double TotalDiscountedItemPrice { get; set; } = 0;
+        public double TotalItemPrice { get; set; } = 0;
         public Discount discount { get; set; }
+        public string DiscountText { get; set; } = "";
     }
 }

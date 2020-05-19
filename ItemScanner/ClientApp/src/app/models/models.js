@@ -14,6 +14,8 @@ var Item = /** @class */ (function () {
         this.price = 0;
         this.totalItems = 0;
         this.totalItemPrice = 0;
+        this.totalDiscountedItemPrice = 0;
+        this.discountText = "";
     }
     return Item;
 }());

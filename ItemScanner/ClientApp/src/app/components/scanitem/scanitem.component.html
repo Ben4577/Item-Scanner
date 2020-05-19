@@ -8,7 +8,7 @@
     </option>
   </select>
 
-  <button type="button"  (click)="onItemSelected()">Scan Selected Item</button>
+  <button class="ml-2 btn btn-primary" type="button"  (click)="onItemSelected()">Scan Selected Item</button>
 </div>
 
 
@@ -20,7 +20,10 @@
       <tr>
         <th>Item Name</th>
         <th>Price</th>
-        <th>Total Amount</th>
+        <th>Total Items</th>
+        <th>Discount</th>
+        <th>Total Items Price</th>
+        <th>Total Discounted Items Price</th>
       </tr>
     </thead>
 
@@ -29,13 +32,23 @@
         <td>{{c.name}}</td>
         <td>{{c.price | number:'1.2-2'}}</td>
         <td>{{c.totalItems}}</td>
+        <td style="color: green">{{c.discountText}}</td>
+        <td>{{c.totalItemPrice  | number:'1.2-2'}}</td>
+        <td style="color: green">{{c.totalDiscountedItemPrice | number:'1.2-2'}}</td>
       </tr>
     </tbody>
   </table>
-  <div>
+  </div>
 
+    <br />
+
+  <div>
+    <h4>Total: {{grandTotal | number:'1.2-2'}}</h4>
   </div>
-  <h4>Total Price: {{grandTotal | number:'1.2-2'}}</h4>
+
+  <div>
+    <h4 style="color:green">Discount Total : {{grandTotalDiscounted | number:'1.2-2'}}</h4>
   </div>
+
 
 

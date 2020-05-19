@@ -11,6 +11,8 @@ export class Item {
   price: number = 0;
   totalItems: number = 0;
   totalItemPrice: number = 0;
+  totalDiscountedItemPrice: number = 0;
+  discountText = "";
 }
 
 

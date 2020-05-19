@@ -20,8 +20,8 @@ namespace ItemScanner.Services
                 TotalItemPrice = 0,
                 discount = new Discount
                 {
-                 DiscountNumber = 2,
-                 DiscountCalc = 0.8
+                 DiscountNumber = 3,
+                 DiscountCalc = 0.86
                 }
                 },
                 new Item
@@ -29,19 +29,19 @@ namespace ItemScanner.Services
                 Name ="B15",
                 Price = 0.30,
                 TotalItems = 0,
-                TotalItemPrice = 0
+                TotalItemPrice = 0,
+                 discount = new Discount
+                {
+                 DiscountNumber = 2,
+                 DiscountCalc = 0.75
+                }
                 },
                new Item
                {
                 Name ="C40",
                 Price = 0.60,
                 TotalItems = 0,
-                TotalItemPrice = 0,
-                  discount = new Discount
-                {
-                 DiscountNumber = 2,
-                 DiscountCalc = 0.5
-                }
+                TotalItemPrice = 0,               
                 }
             };
             return items;
@@ -60,6 +60,7 @@ namespace ItemScanner.Services
                 //add to its total items
                 item.TotalItems += 1;
                 item.TotalItemPrice += item.Price;
+                item.TotalDiscountedItemPrice += item.Price;
 
                 scItems.ScannedItemsList.Add(item);
 
@@ -82,6 +83,7 @@ namespace ItemScanner.Services
                 //add to its total items
                 item.TotalItems += 1;
                 item.TotalItemPrice += item.Price;
+                item.TotalDiscountedItemPrice += item.Price;
 
                 scannedItems.ScannedItemsList.Add(item);
             }
@@ -94,6 +96,8 @@ namespace ItemScanner.Services
                 if (foundItem.discount.DiscountNumber == 0)
                 {
                     foundItem.TotalItemPrice += foundItem.Price;
+                    foundItem.TotalDiscountedItemPrice += foundItem.Price;
+                    foundItem.DiscountText = "";
                 }
                 else
                 {
@@ -102,15 +106,19 @@ namespace ItemScanner.Services
                     if (foundItem.TotalItems % foundItem.discount.DiscountNumber == 0)
                     {
                         //re calculate the total item price
-                        foundItem.TotalItemPrice = 0;
+                        foundItem.TotalItemPrice = 0;                    
                         foundItem.TotalItemPrice = foundItem.TotalItems * foundItem.Price;
 
                         //get the discount
-                        foundItem.TotalItemPrice = foundItem.TotalItemPrice * foundItem.discount.DiscountCalc;
+                        foundItem.TotalDiscountedItemPrice = 0;
+                        foundItem.TotalDiscountedItemPrice = foundItem.TotalItemPrice * foundItem.discount.DiscountCalc;
+                        foundItem.DiscountText = $"Discount {foundItem.discount.DiscountCalc}% applied for {foundItem.TotalItems} items per {foundItem.discount.DiscountNumber} item discount";
                     }
                     else
-                    {
+                    {                   
                         foundItem.TotalItemPrice += foundItem.Price;
+                        foundItem.TotalDiscountedItemPrice += foundItem.Price;
+                        foundItem.DiscountText = "";
                     }
                 }
 
@@ -122,6 +130,22 @@ namespace ItemScanner.Services
             foreach (var i in scannedItems.ScannedItemsList)
             {
                 scannedItems.GrandTotal += i.TotalItemPrice;
+            }
+
+
+            //get the new discounted grand total
+            scannedItems.GrandTotalDiscounted = 0;
+            foreach (var i in scannedItems.ScannedItemsList)
+            {
+                if (i.discount.DiscountNumber != 0)
+                {
+                    scannedItems.GrandTotalDiscounted += i.TotalDiscountedItemPrice;
+                }
+                else
+                {
+                    scannedItems.GrandTotalDiscounted += i.TotalItemPrice;
+                }
+                    
             }
 
             return scannedItems;
