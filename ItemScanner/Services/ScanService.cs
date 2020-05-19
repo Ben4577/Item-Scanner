@@ -17,7 +17,12 @@ namespace ItemScanner.Services
                 Name ="A99",
                 Price = 0.50,
                 TotalItems = 0,
-                TotalItemPrice = 0
+                TotalItemPrice = 0,
+                discount = new Discount
+                {
+                 DiscountNumber = 2,
+                 DiscountCalc = 0.8
+                }
                 },
                 new Item
                {
@@ -31,7 +36,12 @@ namespace ItemScanner.Services
                 Name ="C40",
                 Price = 0.60,
                 TotalItems = 0,
-                TotalItemPrice = 0
+                TotalItemPrice = 0,
+                  discount = new Discount
+                {
+                 DiscountNumber = 2,
+                 DiscountCalc = 0.5
+                }
                 }
             };
             return items;
@@ -40,6 +50,8 @@ namespace ItemScanner.Services
 
         public async Task<ScannedItems> ScanItem(Item item, ScannedItems scannedItems)
         {
+
+
             //create new scanned Item list if not created //////////////////
             if (scannedItems == null)
             {
@@ -47,13 +59,17 @@ namespace ItemScanner.Services
 
                 //add to its total items
                 item.TotalItems += 1;
+                item.TotalItemPrice += item.Price;
 
                 scItems.ScannedItemsList.Add(item);
+
                 //increment the total
-                scItems.GrandTotal += item.Price;
+                scItems.GrandTotal += item.TotalItemPrice;
 
                 return scItems;
             }
+
+
 
             //list already has items//////////////////////////////////////////
 
@@ -65,22 +81,54 @@ namespace ItemScanner.Services
             {
                 //add to its total items
                 item.TotalItems += 1;
+                item.TotalItemPrice += item.Price;
 
                 scannedItems.ScannedItemsList.Add(item);
-                //increment the total
-                scannedItems.GrandTotal += item.Price;
             }
             else
             {
                 //add to its total items
                 foundItem.TotalItems += 1;
 
-                //increment the total
-                scannedItems.GrandTotal += foundItem.Price;
+                //calculate for items with no discount number
+                if (foundItem.discount.DiscountNumber == 0)
+                {
+                    foundItem.TotalItemPrice += foundItem.Price;
+                }
+                else
+                {
+
+                    //see if there is a discount for this number (there could be multiples. remainder should be = 0)
+                    if (foundItem.TotalItems % foundItem.discount.DiscountNumber == 0)
+                    {
+                        //re calculate the total item price
+                        foundItem.TotalItemPrice = 0;
+                        foundItem.TotalItemPrice = foundItem.TotalItems * foundItem.Price;
+
+                        //get the discount
+                        foundItem.TotalItemPrice = foundItem.TotalItemPrice * foundItem.discount.DiscountCalc;
+                    }
+                    else
+                    {
+                        foundItem.TotalItemPrice += foundItem.Price;
+                    }
+                }
+
+            }
+
+
+            //get the new grand total
+            scannedItems.GrandTotal = 0;
+            foreach (var i in scannedItems.ScannedItemsList)
+            {
+                scannedItems.GrandTotal += i.TotalItemPrice;
             }
 
             return scannedItems;
         }
+
+
+
 
     }
 }

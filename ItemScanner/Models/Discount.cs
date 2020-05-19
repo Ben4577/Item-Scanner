@@ -7,7 +7,7 @@ namespace ItemScanner.Models
 {
     public class Discount
     {
-        public int DiscountNumber { get; set; }
-        public double DiscountCalc { get; set; }
+        public int DiscountNumber { get; set; } = 0;
+        public double DiscountCalc { get; set; } = 0;
     }
 }

@@ -1,7 +1,6 @@
 <p>Scan your Item</p>
 
 <div>
-
   <select [(ngModel)]="selectedItem">
     <option *ngFor="let n of items"
             [value]="n.name">
@@ -10,7 +9,6 @@
   </select>
 
   <button type="button"  (click)="onItemSelected()">Scan Selected Item</button>
-
 </div>
 
 

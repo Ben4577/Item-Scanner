@@ -7,9 +7,16 @@ namespace ItemScanner.Models
 {
     public class Item
     {
+
+        public Item()
+        {
+            discount = new Discount();
+        }
+
         public string Name { get; set; }
         public double Price { get; set; }
         public int TotalItems { get; set; }
-        public int TotalItemPrice { get; set; }
+        public double TotalItemPrice { get; set; }
+        public Discount discount { get; set; }
     }
 }

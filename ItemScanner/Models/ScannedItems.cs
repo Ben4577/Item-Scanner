@@ -13,8 +13,8 @@ namespace ItemScanner.Models
         }
 
         public List<Item> ScannedItemsList { get; set; }
-        public double GrandTotal { get; set; }
-        public double GrandTotalDiscounted { get; set; }
+        public double GrandTotal { get; set; } = 0;
+        public double GrandTotalDiscounted { get; set; } = 0;
 
     }
 }
